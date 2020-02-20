@@ -1,0 +1,13 @@
+====== High Priority Stuff ======
+
+The intention of this page is to serve as a location for pointing developers to areas where work is most needed.
+
+==== Work to Be Done ====
+
+  * Reimplement [[https://github.com/darlinghq/darling-corecrypto|CoreCrypto]]. CoreCrypto's source code is publicly available, but its license prevents us from using it for Darling. Luckily, it's not that difficult! Some work has already been done. Having CoreCrypto will also enable us to build a recent version of [[https://github.com/darlinghq/darling-commoncrypto|CommonCrypto]].
+  * Implement [[https://github.com/darlinghq/darling/issues/187|CFMachPort]].
+  * Implement [[https://github.com/darlinghq/darling/issues/165|CFNotificationCenter]] (a stub now exists).
+
+===== AppKit.framework =====
+
+More details to be added.

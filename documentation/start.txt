@@ -1,0 +1,31 @@
+====== Documentation ======
+
+Documentation of Darling to help new developers understand how Darling (and macOS) work.
+
+===== Basics =====
+
+  * [[documentation:Loader]]
+  * [[documentation:System Call Emulation]]
+  * [[documentation:Containerization]]
+
+===== Threading =====
+
+  * [[documentation:Thread Implementation]]
+  * [[documentation:Thread Local Storage]]
+
+===== MacOS Specifics =====
+
+  * [[documentation:Mach Ports]]
+  * [[documentation:Commpage]]
+  * [[documentation:Objective-C]]
+
+===== File Formats =====
+
+  * [[documentation:DMG]]
+  * [[documentation:PKG]]
+  * [[documentation:XAR]]
+  * [[documentation:XIP]]
+
+===== Other =====
+
+  * [[documentation:Calling Host System APIs]]

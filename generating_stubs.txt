@@ -1,0 +1,47 @@
+====== Generating Stubs ======
+
+Darling has a stub generator that is capable of generating stubs for C and Objective-C frameworks and shared libraries. A computer running macOS is required to run the stub generator.
+
+===== Getting dependencies =====
+
+  - Download class-dump from [[https://github.com/darlinghq/class-dump/releases/tag/mojave |here]]. This is where the build of class-dump for use with the stub generator is available from.
+  - Make a directory with the name "bin" in your home folder.
+  - Place place the class-dump binary you downloaded in ~/bin
+
+The stub generator assumes class-dump is located at ~/bin/class-dump
+
+===== Getting the stub generator =====
+
+Copy/paste the following command into Terminal.
+
+<code>curl https://raw.githubusercontent.com/darlinghq/darling/master/tools/darling-stub-gen -o ~/bin/darling-stub-gen && chmod +x ~/bin/darling-stub-gen && echo "export PATH=\"~/bin:\$PATH\"" >> ~/.bash_profile && source ~/.bash_profile</code>
+
+===== Using the stub generator =====
+
+To run the stub generator, structure your arguments like this:
+
+<code>darling-stub-gen /System/Library/Frameworks/DVDPlayback.framework/DVDPlayback DVDPlayback</code>
+
+The process is identical for dynamic libraries.
+
+The above command will create a folder that can be placed in the /src directory of Darling's source tree. It is generated from the DVDPlayback framework. Note that the first argument points to the actual binary of the framework, not the root directory of the framework.
+
+Once you have generated a stub source folder for the framework as the above command does for DVDPlayback, you can copy that folder into Darling's source tree under /src.
+
+After this you need to add the new folder to the build. In /src/CMakeLists.txt, make the following changes:
+
+In the ''include_directories(AFTER'' call, put ''${CMAKE_CURRENT_SOURCE_DIR}/MyNewFolder/include'' at the end.
+
+Then, before the line starting with
+<code>include_directories(BEFORE
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/libcxxabi/include
+)</code>
+
+make a new line with ''add_subdirectory(MyNewFolder)''.
+
+The next step is to do a build and make sure your new code compiles.
+
+After that completes, you are ready to submit a pull request. See [[contributing|Contributing]] for how to do that. [[https://github.com/darlinghq/darling/commit/92233d4e5ca613658345910d1acf4b3b7620a4f6|This commit]] is an example of a stub for a framework that was added to Darling using the process described in this article. Most notable is what it does to /src/CMakeLists.txt.
+===== Known issues =====
+
+  * The stub generator does not currently generate symbols for constants. Those must be manually added if a program needs them.

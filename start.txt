@@ -1,0 +1,23 @@
+====== Darling ======
+
+This wiki is intended to serve as an information source and a guide to using Darling and running various applications with Darling.
+
+===== Basics =====
+
+  * [[Build Instructions]]
+  * [[Uninstall]]
+  * [[Darling Shell]]
+  * [[Darling Prefix]]
+  * [[Installing Software]]
+  * [[What to Try]]
+
+===== Development =====
+
+  * [[documentation:start|Documentation]]
+  * [[Contributing]]
+  * [[High Priority Stuff]]
+  * [[Google Summer of Code]]
+  * [[Generating Stubs]]
+  * [[Debugging]]
+
+Note: public registrations have been disabled on this wiki due to constant spambot activity. E-mail <lubos@dolezel.info> if you want to register.

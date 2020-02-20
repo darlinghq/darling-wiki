@@ -1,0 +1,8 @@
+====== Roadmap ======
+
+===== Low-Level =====
+
+  * Have ELF (native Linux) code run inside ''/Volumes/SystemRoot''.
+  * Extend the kernel module to produce Mach-O core dumps.
+  * Enable macOS Homebrew to run (current hurdle: [[https://github.com/darlinghq/darling/issues/353|missing memberd]]).
+  * Fix the [[https://github.com/darlinghq/darling/issues/368|bug]] with a single Mach port in multiple port sets.
