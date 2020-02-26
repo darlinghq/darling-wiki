@@ -1,6 +1,6 @@
 ====== Debugging ======
 
-We provide a [[https://drive.google.com/open?id=1bGz3VomuLMq5R5kXGpGg6z35JIlewWnx|build of LLDB]] that is known to work under Darling. It is built from vanilla sources, i.e. without any modifications.
+We provide a [[https://osdn.net/projects/darling/storage/apps/lldb.tar.bz2|build of LLDB]] that is known to work under Darling. It is built from vanilla sources, i.e. without any modifications.
 
 That doesn't mean it works //reliably//. Fully supporting a debugger is a complex task, so LLDB is known to be buggy under Darling.
 
