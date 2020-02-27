@@ -18,6 +18,7 @@ Documentation of Darling to help new developers understand how Darling (and macO
   * [[documentation:Mach Ports]]
   * [[documentation:Commpage]]
   * [[documentation:Objective-C]]
+  * [[documentation:Distributed Objects]]
 
 ===== File Formats =====
 
