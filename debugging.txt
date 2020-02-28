@@ -46,3 +46,54 @@ To emulate the macOS behavior, Darling makes use of POSIX real-time signals to i
 | Pausing the debuggee | ''kill(SIGSTOP)'' | ''kill(SIGSTOP)'' or ''ptrace(PTRACE_INTERRUPT)'' | Send a RT signal to the debuggee that it should act as if SIGSTOP were sent to the process. We cannot send a real SIGSTOP, because then the debuggee couldn't provide/update register state to the debugger etc. |
 | Change signal delivery | ''ptrace(PT_THUPDATE)'' | ''ptrace(PTRACE_rest)'' | Send a RT signal to the debuggee to inform it what it should do with the signal (ignore, pass it to the application etc.) |
 | Set memory watchpoints | ''thread_set_state(X86_DEBUG_STATE)'' | ''ptrace(PTRACE_POKEUSER)'' | Implement the effects of ''PTRACE_POKEUSER'' in the LKM. |
+
+===== Built-in debugging utilities =====
+
+==== malloc ====
+
+**libmalloc** (the default library that implements ''malloc()'', ''free()'' and friends) supports many debug features that can be turned on via environment, among them:
+  * ''MallocScribble'' (fill freed memory with 0x55)
+  * ''MallocPreScribble'' (fill allocated memory with 0xaa)
+  * ''MallocGuardEdges'' (guard edges of large allocations)
+
+When this is not enough, you can use **libgmalloc**, which is (for the most part) a drop-in replacement for libmalloc. This is how you use it:
+
+<code>$ DYLD_INSERT_LIBRARIES=/usr/lib/libgmalloc.dylib DYLD_FORCE_FLAT_NAMESPACE=1 ./test</code>
+
+
+libgmalloc catches memory issues such as use-after-free and buffer overflows, and attempts to do this the moment they occur, rather than wait for them to mess up some internal state and manifest elsewhere. It does that by placing each allocation on its own memory page(s), and adding a guard page next to it (like ''MallocGuardEdges'' on steroids) -- by default, after the allocated buffer (to catch buffer overruns), or with ''MALLOC_PROTECT_BEFORE'', before it (to catch buffer underruns). You're likely want to try it both ways, with and without ''MALLOC_PROTECT_BEFORE''. Another useful option is ''MALLOC_FILL_SPACE'' (similar to ''MallocPreScribble'' from above). See [[https://www.manpagez.com/man/3/libgmalloc/|libgmalloc(3)]] for more details.
+
+==== Objective-C and Cocoa ====
+
+In Objective-C land, you can set ''NSZombieEnabled=YES'' in order to detect use-after-free of Objective-C objects. This replaces ''-[NSObject dealloc]'' with a different implementation that does not deallocate the memory, but instead turns the object into a "zombie". Upon receiving any message (which indicates a use-after-free), the zombie will log the message and abort the process.
+
+Another useful option is ''NSObjCMessageLoggingEnabled=YES'', which will instruct the Objective-C runtime to log all the sent messages to a file in ''/tmp''.
+
+In AppKit, you can set the ''NSShowAllViews'' default (e.g. with ''-NSShowAllViews 1'' on the command line) to cause it to draw a colorful border around each view.
+
+You can find more tips (not all of which work under Darling) at https://developer.apple.com/library/archive/technotes/tn2124/_index.html
+
+==== xtrace ====
+
+You can use **xtrace** to trace Darwin syscalls a program makes, a lot like using ''strace'' on Linux:
+
+<code>
+$ xtrace vm_stat
+[139] fstat64(1, 0x7fffffdfe340) -> 0
+[139] host_self_trap() -> port right 2563
+[139] mach_msg_trap(0x7fffffdfdfc0, MACH_SEND_MSG|MACH_RCV_MSG, 40, 1072, port 1543, 0, port 0)
+[139]         {remote = copy send 2563, local = make send-once 1543, id = 219}, 16 bytes of inline data
+[139]         mach_host::host_statistics64(copy send 2563, 4, 38)
+[139]     mach_msg_trap() -> KERN_SUCCESS
+[139]         {local = move send-once 1543, id = 319}, 168 bytes of inline data
+[139]         mach_host::host_statistics64() -> [75212, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1024, 4159955152, 720014745, 503911965, 0, 4160737656, 2563, 4292863152, 4160733284, 4160733071, 0], 38 
+[139] write_nocancel(1, 0x7fd456800600, 58)Mach Virtual Memory Statistics: (page size of 4096 bytes)
+ -> 58
+[139] write_nocancel(1, 0x7fd456800600, 49)Pages free:                               75212.
+ -> 49
+...
+</code>
+
+''xtrace'' can trace both BSD syscalls and Mach traps. For ''mach_msg()'' in particular, ''xtrace'' additionally displays the message being sent or received, as well as tries to decode it as a MIG routine call or reply.
+
+Note that ''xtrace'' only traces emulated Darwin syscalls, so any native Linux syscalls made (usually by native ELF libraries) will not be displayed, which means information and open file descriptors may appear to come from nowhere in those cases.
