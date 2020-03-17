@@ -2,19 +2,26 @@
 
 Darling has a stub generator that is capable of generating stubs for C and Objective-C frameworks and shared libraries. A computer running macOS is required to run the stub generator.
 
-===== Getting dependencies =====
+===== Preparations =====
 
-  - Download class-dump from [[https://github.com/darlinghq/class-dump/releases/tag/mojave |here]]. This is where the build of class-dump for use with the stub generator is available from.
-  - Make a directory with the name "bin" in your home folder.
-  - Place place the class-dump binary you downloaded in ~/bin
+You don't need to do this step if you already have a ''bin'' folder in your home directory, with the ''PATH'' variable pointing to it. If not, copy/paste the following commands into Terminal.
 
-The stub generator assumes class-dump is located at ~/bin/class-dump
+Create the ''bin'' folder if it doesn't exist.
+
+<code>mkdir ~/bin</code>
+
+If you ''PATH'' variable does not include the ''bin'' folder, you will need to add it.
+
+<code>#If your shell is bash
+echo "export PATH=\"~/bin:\$PATH\"" >> ~/.bash_profile && source ~/.bash_profile
+#If your shell is zsh
+echo "export PATH=\"\$HOME/bin:\$PATH\"" >> ~/.zshenv && source ~/.zshenv</code>
 
 ===== Getting the stub generator =====
 
-Copy/paste the following command into Terminal.
+Copy/paste the following command into Terminal. It will download both ''darling-stub-gen'' and ''class-dump'' and place it in the ''bin'' folder
 
-<code>curl https://raw.githubusercontent.com/darlinghq/darling/master/tools/darling-stub-gen -o ~/bin/darling-stub-gen && chmod +x ~/bin/darling-stub-gen && echo "export PATH=\"~/bin:\$PATH\"" >> ~/.bash_profile && source ~/.bash_profile</code>
+<code>curl https://raw.githubusercontent.com/darlinghq/darling/master/tools/darling-stub-gen -o ~/bin/darling-stub-gen && chmod +x ~/bin/darling-stub-gen && curl https://github.com/darlinghq/class-dump/releases/download/mojave/class-dump -L -o ~/bin/class-dump && chmod +x ~/bin/class-dump</code>
 
 ===== Using the stub generator =====
 
