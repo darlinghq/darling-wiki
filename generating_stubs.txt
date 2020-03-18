@@ -52,3 +52,5 @@ See [[contributing|Contributing]] for how to submit a pull request. [[https://gi
 ====== Known issues ======
 
   * The stub generator does not currently generate symbols for constants. Those must be manually added if a program needs them.
+  * Generating stubs for platforms outside of x86 (macOS, iOS Simulator) is not supported
+    * (**TODO**: Figure out how to generate stubs from a ''dyld_shared_cache'' file)
