@@ -2,7 +2,7 @@
 
 Darling has a stub generator that is capable of generating stubs for C and Objective-C frameworks and shared libraries. A computer running macOS is required to run the stub generator.
 
-===== Preparations =====
+====== Preparations ======
 
 You don't need to do this step if you already have a ''bin'' folder in your home directory, with the ''PATH'' variable pointing to it. If not, copy/paste the following commands into Terminal.
 
@@ -31,24 +31,24 @@ To run the stub generator, structure your arguments like this:
 
 The process is identical for dynamic libraries.
 
-The above command will create a folder that can be placed in the /src directory of Darling's source tree. It is generated from the DVDPlayback framework. Note that the first argument points to the actual binary of the framework, not the root directory of the framework.
+The above command will create a folder that can be placed in the ''src/frameworks/'' directory of Darling's source tree. It is generated from the DVDPlayback framework. Note that the first argument points to the actual binary of the framework, not the root directory of the framework.
 
-Once you have generated a stub source folder for the framework as the above command does for DVDPlayback, you can copy that folder into Darling's source tree under /src.
+===== Applying the stubs to Darling =====
 
-After this you need to add the new folder to the build. In /src/CMakeLists.txt, make the following changes:
+Once you have generated the stub folder for the framework, copy that folder into Darling's source tree under ''src/frameworks/''.
 
-In the ''include_directories(AFTER'' call, put ''${CMAKE_CURRENT_SOURCE_DIR}/MyNewFolder/include'' at the end.
+Then traverse to the ''src/frameworks/include/'' directory (also located inside Darling's source tree) and create a soft symbolic link. The link should point to the folder inside the include directory (ex: ''MyNewFolder/include/MyNewFolder'' )
 
-Then, before the line starting with
-<code>include_directories(BEFORE
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/libcxxabi/include
-)</code>
+Below is an example of creating a soft symbolic link using ''ln''. Don't forget to ''cd'' into ''src/frameworks/include/'' first.
 
-make a new line with ''add_subdirectory(MyNewFolder)''.
+<code>ln -s ../MyNewFolder/include/MyNewFolder MyNewFolder</code>
 
-The next step is to do a build and make sure your new code compiles.
+Finally, you will need to add the folder to the build. In ''src/frameworks/CMakeLists.txt'', add the following line: ''add_subdirectory(MyNewFolder)''. Make sure you put it in alphabetical order.
 
-After that completes, you are ready to submit a pull request. See [[contributing|Contributing]] for how to do that. [[https://github.com/darlinghq/darling/commit/92233d4e5ca613658345910d1acf4b3b7620a4f6|This commit]] is an example of a stub for a framework that was added to Darling using the process described in this article. Most notable is what it does to /src/CMakeLists.txt.
-===== Known issues =====
+Run a build and make sure your new code compiles. After that completes, you are ready to submit a pull request.
+
+See [[contributing|Contributing]] for how to submit a pull request. [[https://github.com/darlinghq/darling/commit/92233d4e5ca613658345910d1acf4b3b7620a4f6|This commit]] is an example of a stub for a framework that was added to Darling using the process described in this article. Most notable is what it does to /src/CMakeLists.txt.
+
+====== Known issues ======
 
   * The stub generator does not currently generate symbols for constants. Those must be manually added if a program needs them.
