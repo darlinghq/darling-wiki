@@ -29,7 +29,7 @@ sudo apt install cmake clang-7 bison flex xz-utils libfuse-dev libudev-dev pkg-c
 ===== Ubuntu 18.04.3 =====
 
 <code>
-sudo apt install cmake clang bison flex libfuse-dev libudev-dev pkg-config libc6-dev-i386 linux-headers-generic gcc-multilib libcairo2-dev libgl1-mesa-dev libtiff5-dev libfreetype6-dev git libelf-dev libxml2-dev libegl1-mesa-dev libfontconfig1-dev libbsd-dev libxrandr-dev libxcursor-dev libgif-dev libavcodec-dev libavformat-dev libavresample-dev libavutil-dev libpulse-dev libavformat-dev libavcodec-dev libavresample-dev
+sudo apt install cmake clang bison flex libfuse-dev libudev-dev pkg-config libc6-dev-i386 linux-headers-generic gcc-multilib libcairo2-dev libgl1-mesa-dev libtiff5-dev libfreetype6-dev git libelf-dev libxml2-dev libegl1-mesa-dev libfontconfig1-dev libbsd-dev libxrandr-dev libxcursor-dev libgif-dev libavutil-dev libpulse-dev libavformat-dev libavcodec-dev libavresample-dev
 </code>
 
 ===== Arch Linux & Manjaro =====
@@ -49,8 +49,11 @@ Then you should have ''linux54-headers'' installed. You will typically be prompt
 
 ===== Fedora and CentOS =====
 
+[[https://rpmfusion.org/RPM%20Fusion|RPMFusion]] is required for FFmpeg.
+
+
 <code>
-sudo dnf install make cmake clang bison flex python2 glibc-devel.i686 fuse-devel systemd-devel kernel-devel elfutils-libelf-devel cairo-devel freetype-devel.{x86_64,i686} libjpeg-turbo-devel.{x86_64,i686} libtiff-devel.{x86_64,i686} fontconfig-devel.{x86_64,i686} libglvnd-devel.{x86_64,i686} mesa-libGL-devel.{x86_64,i686} mesa-libEGL-devel.{x86_64,i686} libxml2-devel libbsd-devel git libXcursor-devel giflib-devel
+sudo dnf install make cmake clang bison flex python2 glibc-devel.i686 fuse-devel systemd-devel kernel-devel elfutils-libelf-devel cairo-devel freetype-devel.{x86_64,i686} libjpeg-turbo-devel.{x86_64,i686} libtiff-devel.{x86_64,i686} fontconfig-devel.{x86_64,i686} libglvnd-devel.{x86_64,i686} mesa-libGL-devel.{x86_64,i686} mesa-libEGL-devel.{x86_64,i686} libxml2-devel libbsd-devel git libXcursor-devel giflib-devel ffmpeg-devel pulseaudio-libs-devel
 </code>
 
 ====== Fetch the Sources ======
